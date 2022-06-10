@@ -1,24 +1,24 @@
 package com.devsparkle.twitterclient.domain.di
 
-import com.devsparkle.twitterclient.domain.repository.local.LocalCaseStudyRepository
-import com.devsparkle.twitterclient.domain.repository.remote.RemoteCaseStudyRepository
-import com.devsparkle.twitterclient.domain.use_case.GetCaseStudies
-import com.devsparkle.twitterclient.domain.use_case.PersistCaseStudies
+import com.devsparkle.twitterclient.domain.repository.local.LocalTweetRepository
+import com.devsparkle.twitterclient.domain.repository.remote.RemoteTweetRepository
+import com.devsparkle.twitterclient.domain.use_case.GetTweets
+import com.devsparkle.twitterclient.domain.use_case.PersistTweets
 import org.koin.dsl.module
 
 val domainModule = module {
 
     factory {
-        GetCaseStudies(
-            get<LocalCaseStudyRepository>(),
-            get<RemoteCaseStudyRepository>()
+        GetTweets(
+            get<LocalTweetRepository>(),
+            get<RemoteTweetRepository>()
         )
     }
 
 
     factory {
-        PersistCaseStudies(
-            get<LocalCaseStudyRepository>()
+        PersistTweets(
+            get<LocalTweetRepository>()
         )
     }
 

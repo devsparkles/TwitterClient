@@ -1,6 +1,9 @@
 package com.devsparkle.twitterclient.utils.extensions
 
+import android.app.Activity
 import android.view.View
+import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat
 
 /**
  * Show the view  (visibility = View.VISIBLE)
@@ -42,4 +45,12 @@ inline fun View.hideIf(condition: () -> Boolean): View {
         visibility = View.GONE
     }
     return this
+}
+
+
+fun Activity.hideKeyboard() {
+    currentFocus?.let { view ->
+        val imm = ContextCompat.getSystemService(this, InputMethodManager::class.java)
+        imm?.hideSoftInputFromWindow(view.windowToken, 0)
+    }
 }

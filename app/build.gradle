@@ -5,13 +5,15 @@ plugins {
     id 'androidx.navigation.safeargs.kotlin'
 }
 
+apply from: '../informations.gradle'
+
 android {
     compileSdk 32
 
     defaultConfig {
         applicationId "com.devsparkle.twitterclient"
-        minSdk 24
-        targetSdk 32
+        minSdk rootProject.minSdkVersion
+        targetSdk rootProject.targetSdkVersion
         versionCode 1
         versionName "1.0"
 
@@ -32,8 +34,40 @@ android {
         jvmTarget = '1.8'
     }
     buildFeatures {
+        dataBinding true
         viewBinding true
     }
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+    flavorDimensions "base", "version"
+
+
+    productFlavors {
+        base {
+            dimension "base"
+        }
+
+        staging {
+            dimension "version"
+            buildConfigField "String", "API_URL", DEBUG_API_URL
+        }
+
+        uat {
+            dimension "version"
+            buildConfigField "String", "API_URL", UAT_API_URL
+        }
+
+        production {
+            dimension "version"
+            buildConfigField "String", "API_URL", RELEASE_API_URL
+        }
+
+    }
+
+
 }
 
 dependencies {

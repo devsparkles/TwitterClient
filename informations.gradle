@@ -1,0 +1,11 @@
+ext {
+
+    STAGING_API_URL = '\"https://api.twitter.com/\"'
+
+    DEBUG_API_URL = '\"https://api.twitter.com/\"'
+
+    UAT_API_URL = '\"https://api.twitter.com/\"'
+
+    RELEASE_API_URL = '\"https://api.twitter.com/\"'
+
+}

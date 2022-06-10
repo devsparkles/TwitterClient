@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/layout/activity_list_tweet.xml" value="0.1673611111111111" />
+        <entry key="app/src/main/res/layout/view_holder_tweet_item.xml" value="0.47101449275362317" />
         <entry key="app/src/main/res/xml/network_security_config.xml" value="0.4463019250253293" />
       </map>
     </option>

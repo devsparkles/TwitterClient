@@ -1,13 +1,12 @@
 package com.devsparkle.twitterclient.data.di
 
 import android.content.Context
-import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-
 import java.util.concurrent.TimeUnit
+
 interface RemoteRetrofitBuilder {
     companion object {
 
@@ -21,11 +20,6 @@ interface RemoteRetrofitBuilder {
         }
 
         private fun createOkHttpClient(context: Context): OkHttpClient {
-
-            val cacheSize = 10 * 1024 * 1024L // 10 MB
-
-            val cache = Cache(context.cacheDir, cacheSize)
-
             val timeoutInSeconds = 30L
             val httpLoggingInterceptor = HttpLoggingInterceptor()
             httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
@@ -34,9 +28,10 @@ interface RemoteRetrofitBuilder {
                 .connectTimeout(timeoutInSeconds, TimeUnit.SECONDS)
                 .readTimeout(timeoutInSeconds, TimeUnit.SECONDS)
                 .addInterceptor(httpLoggingInterceptor)
-                .cache(cache)
+                .addInterceptor(OAuthInterceptor("Bearer", "AAAAAAAAAAAAAAAAAAAAALcSdgEAAAAAW8S0SWmcUaiQoM4%2F0Q%2FWWJ7Hoyk%3DydCCizNCgGsExYExd8XL9QUNzOCB3G920AVYayotiinWYzyOP6"))
                 .build()
         }
+
 
     }
 }

@@ -1,24 +1,25 @@
 package com.devsparkle.twitterclient.data.di
 
 
-import com.devsparkle.twitterclient.data.remote.casestudy.repository.RemoteCaseStudyRepositoryImpl
-import com.devsparkle.twitterclient.data.remote.casestudy.service.CaseStudyService
-import com.devsparkle.twitterclient.domain.repository.remote.RemoteCaseStudyRepository
+import com.devsparkle.twitterclient.BuildConfig
+import com.devsparkle.twitterclient.data.remote.casestudy.repository.RemoteTweetRepositoryImpl
+import com.devsparkle.twitterclient.data.remote.casestudy.service.TweetService
+import com.devsparkle.twitterclient.domain.repository.remote.RemoteTweetRepository
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
 
 
-const val TWITTER_RETROFIT = "KINCARTA_RETROFIT"
+const val TWITTER_RETROFIT = "TWITTER_RETROFIT"
 const val SERVER_URL = "SERVER_URL"
 
 val remoteDataModule = module {
 
 
     single(named(SERVER_URL)) {
-        //BuildConfig.API_URL
-        "https://raw.githubusercontent.com/"
+        BuildConfig.API_URL
+       //"https://raw.githubusercontent.com/"
     }
 
     single(named(TWITTER_RETROFIT)) {
@@ -27,9 +28,9 @@ val remoteDataModule = module {
 
 
     factory {
-        RemoteCaseStudyRepositoryImpl(
-            get<CaseStudyService>()
-        ) as RemoteCaseStudyRepository
+        RemoteTweetRepositoryImpl(
+            get<TweetService>()
+        ) as RemoteTweetRepository
     }
 
 
@@ -41,6 +42,6 @@ val remoteDataModule = module {
 
 }
 
-private fun getCaseStudyService(retrofit: Retrofit): CaseStudyService =
-    retrofit.create(CaseStudyService::class.java)
+private fun getCaseStudyService(retrofit: Retrofit): TweetService =
+    retrofit.create(TweetService::class.java)
 

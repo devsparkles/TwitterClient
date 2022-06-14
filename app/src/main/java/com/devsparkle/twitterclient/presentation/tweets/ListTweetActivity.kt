@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.devsparkle.twitterclient.R
-import com.devsparkle.twitterclient.base.resource.observeResource
 import com.devsparkle.twitterclient.databinding.ActivityListTweetBinding
 import com.devsparkle.twitterclient.domain.model.Tweet
 import com.devsparkle.twitterclient.presentation.tweets.adapter.TweetAdapter
@@ -16,7 +15,6 @@ import com.devsparkle.twitterclient.utils.extensions.hide
 import com.devsparkle.twitterclient.utils.extensions.hideKeyboard
 import com.devsparkle.twitterclient.utils.extensions.isConnected
 import com.devsparkle.twitterclient.utils.extensions.show
-import com.devsparkle.twitterclient.utils.extensions.showIf
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -25,7 +23,6 @@ class ListTweetActivity : AppCompatActivity() {
 
     private val TAG: String = "ListTweetActivity"
 
-    private var isFirstLaunch = true
     lateinit var binding: ActivityListTweetBinding
     private val viewModel by viewModel<ListTweetViewModel>()
     private val adapter by inject<TweetAdapter> {
@@ -52,7 +49,6 @@ class ListTweetActivity : AppCompatActivity() {
         setUpRecyclerView()
         setupButton()
         setUpResourceObserver()
-     //   onFirstLaunch()
     }
 
     private fun setupToolbar() = with(binding) {
@@ -70,7 +66,7 @@ class ListTweetActivity : AppCompatActivity() {
     private fun setupButton() =  with(binding) {
         btnSearch.setOnClickListener() {
             if(etQuery.text.toString().isNotEmpty()){
-                viewModel.getCaseStudies(etQuery.text.toString(), isConnected = isConnected)
+                viewModel.searchTweetsByQuery(etQuery.text.toString(), isConnected = isConnected)
             } else {
                 showMessage("Can't search empty text")
             }
@@ -78,21 +74,13 @@ class ListTweetActivity : AppCompatActivity() {
     }
 
     private fun setUpResourceObserver() {
-        viewModel.tweet.observeResource(
-            this@ListTweetActivity,
-            loading = ::onTweetLoading,
-            success = ::onTweetySuccess,
-            error = ::onTweetError,
-            successWithoutContent = {}
-        )
-    }
-
-    private fun onFirstLaunch() {
-        if (isFirstLaunch) {
-            viewModel.getCaseStudies("",isConnected)
-            isFirstLaunch = false
+        viewModel.observeTweetFromLocal().observe(
+            this@ListTweetActivity
+        ) {
+            onTweetySuccess(it)
         }
     }
+
 
     private fun onTweetLoading() = with(binding) {
         loadingScreen.show()
@@ -105,18 +93,14 @@ class ListTweetActivity : AppCompatActivity() {
         loadingScreen.hide()
         emptyDataParent.hide()
         value?.let {
-            it.let { caseStudies ->
+            it.let { tweets ->
                 if (!isConnected) {
                     showMessage(getString(R.string.currently_offline_showing_cache_data), Toast.LENGTH_LONG)
                     toolbar.title = getString(R.string.toolbar_title_offline)
                 }
-                adapter.updateTweets(caseStudies)
-                if (caseStudies.isEmpty()) {
+                adapter.updateTweets(tweets)
+                if (tweets.isEmpty()) {
                     emptyDataParent.visibility = View.VISIBLE
-                } else {
-                    if (isConnected) {
-                        viewModel.persistCaseStudies(caseStudies)
-                    }
                 }
             }
         } ?: run {

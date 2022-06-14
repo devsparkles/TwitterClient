@@ -4,10 +4,10 @@ import com.devsparkle.twitterclient.domain.model.Tweet
 import com.devsparkle.twitterclient.domain.repository.local.LocalTweetRepository
 
 
-class PersistTweets(
+class PersistTweet(
     private val localTweetRepository: LocalTweetRepository
 ) {
-    suspend operator fun invoke(list: List<Tweet>) {
-        localTweetRepository.persistTweets(list)
+    suspend operator fun invoke(tweet: Tweet) {
+        localTweetRepository.persistTweet(tweet)
     }
 }

@@ -1,13 +1,14 @@
 package com.devsparkle.twitterclient.domain.use_case
 
-import com.devsparkle.twitterclient.domain.model.Tweet
 import com.devsparkle.twitterclient.domain.repository.local.LocalTweetRepository
 
-
-class PersistTweets(
+class DefineTweetLifeSpan(
     private val localTweetRepository: LocalTweetRepository
 ) {
-    suspend operator fun invoke(list: List<Tweet>) {
-        localTweetRepository.persistTweets(list)
+    /**
+     * Define the tweetlifespan
+     */
+    suspend operator fun invoke(tweetLifeSpan: Int) {
+        return localTweetRepository.defineTweetLifeSpan(tweetLifeSpan)
     }
 }

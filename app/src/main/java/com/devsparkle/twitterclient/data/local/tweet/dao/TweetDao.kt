@@ -14,12 +14,19 @@ import com.devsparkle.twitterclient.data.local.tweet.entities.TweetEntity
 interface TweetDao {
 
     /**
+     * Observe tweets
+     */
+    @Query("SELECT * FROM tweets")
+    fun observeTweets(): LiveData<List<TweetEntity>>
+
+
+    /**
      * Get the list of tweets.
      *
      * @return all tweets.
      */
     @Query("SELECT * FROM tweets")
-    fun getTweets(): List<TweetEntity>
+    suspend fun getTweets(): List<TweetEntity>
 
 
     /**

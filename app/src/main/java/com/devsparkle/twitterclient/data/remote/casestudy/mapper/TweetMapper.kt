@@ -33,7 +33,8 @@ fun TweetWrapperDto?.toDomain(): TweetWrapper {
 fun TweetDto?.toDomain(): Tweet {
     return Tweet(
         this?.id,
-        this?.text
+        this?.text,
+        lifespan = null
     )
 }
 
@@ -41,7 +42,8 @@ fun TweetDto?.toDomain(): Tweet {
 fun Tweet.toEntity(): TweetEntity {
     return TweetEntity(
         tweetId = this.id ?: "",
-        text = this.text ?: ""
+        text = this.text ?: "",
+        lifespan = this.lifespan
     )
 }
 
@@ -49,11 +51,12 @@ fun Tweet.toEntity(): TweetEntity {
 fun TweetEntity?.toDomain(): Tweet {
     return Tweet(
         this?.id,
-        this?.text
+        this?.text,
+        this?.lifespan
     )
 }
 
-fun List<TweetEntity>.toDomainCaseStudy(): List<Tweet> {
+fun List<TweetEntity>.toDomainTweets(): List<Tweet> {
     val result: MutableList<Tweet> = mutableListOf()
     this.forEach { result.add(it.toDomain()) }
     return result.toList()

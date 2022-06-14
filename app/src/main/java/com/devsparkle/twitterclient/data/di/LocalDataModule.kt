@@ -1,6 +1,7 @@
 package com.devsparkle.twitterclient.data.di
 
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
 import androidx.room.Room
 import com.devsparkle.twitterclient.data.local.TwitterDatabase
@@ -30,7 +31,8 @@ val localDataModule = module {
 
     factory {
         LocalTweetRepositoryImpl(
-            get<TweetDao>()
+            get<TweetDao>(),
+            get<SharedPreferences>()
         ) as LocalTweetRepository
     }
 

@@ -11,4 +11,5 @@
     <string name="toolbar_title_error">Error</string>
     <string name="search">Search</string>
 
+    <string name="search_twitter">Search Twitter</string>
 </resources>

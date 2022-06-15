@@ -1,7 +1,7 @@
-package com.devsparkle.twitterclient.data.remote.casestudy.service
+package com.devsparkle.twitterclient.data.remote.tweet.service
 
 
-import com.devsparkle.twitterclient.data.remote.casestudy.dto.TweetWrapperDto
+import com.devsparkle.twitterclient.data.remote.tweet.dto.TweetWrapperDto
 import retrofit2.http.GET
 import retrofit2.http.Query
 

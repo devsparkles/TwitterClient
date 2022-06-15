@@ -2,8 +2,9 @@ package com.devsparkle.twitterclient.data.di
 
 
 import com.devsparkle.twitterclient.BuildConfig
-import com.devsparkle.twitterclient.data.remote.casestudy.repository.RemoteTweetRepositoryImpl
-import com.devsparkle.twitterclient.data.remote.casestudy.service.TweetService
+import com.devsparkle.twitterclient.data.remote.RemoteRetrofitBuilder
+import com.devsparkle.twitterclient.data.remote.tweet.repository.RemoteTweetRepositoryImpl
+import com.devsparkle.twitterclient.data.remote.tweet.service.TweetService
 import com.devsparkle.twitterclient.domain.repository.remote.RemoteTweetRepository
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.qualifier.named

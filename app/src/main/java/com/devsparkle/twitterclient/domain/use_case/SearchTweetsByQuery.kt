@@ -5,7 +5,7 @@ import com.devsparkle.twitterclient.domain.model.Tweet
 import com.devsparkle.twitterclient.domain.repository.remote.RemoteTweetRepository
 
 
-class GetTweets(
+class SearchTweetsByQuery(
     private val remoteTweetRepository: RemoteTweetRepository
 ) {
     suspend operator fun invoke(query: String): Resource<List<Tweet>?> {

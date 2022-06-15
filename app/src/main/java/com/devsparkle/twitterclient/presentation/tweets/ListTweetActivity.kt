@@ -1,12 +1,12 @@
 package com.devsparkle.twitterclient.presentation.tweets
 
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.devsparkle.twitterclient.R
+import com.devsparkle.twitterclient.base.BaseActivity
+import com.devsparkle.twitterclient.base.resource.observeResource
 import com.devsparkle.twitterclient.databinding.ActivityListTweetBinding
 import com.devsparkle.twitterclient.domain.model.Tweet
 import com.devsparkle.twitterclient.presentation.tweets.adapter.TweetAdapter
@@ -19,7 +19,7 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class ListTweetActivity : AppCompatActivity() {
+class ListTweetActivity : BaseActivity() {
 
     private val TAG: String = "ListTweetActivity"
 
@@ -45,11 +45,20 @@ class ListTweetActivity : AppCompatActivity() {
                 com.devsparkle.twitterclient.R.layout.activity_list_tweet
             )
         binding.lifecycleOwner = this
+        setupIsConnected()
         setupToolbar()
         setUpRecyclerView()
         setupButton()
         setUpResourceObserver()
     }
+
+    private fun setupIsConnected() {
+        connectionLiveData.observe(this) {
+            viewModel.isNetworkAvailable.value = it
+        }
+        viewModel.isNetworkAvailable.value = isConnected
+    }
+
 
     private fun setupToolbar() = with(binding) {
         toolbar.title = getString(R.string.toolbar_title_default)
@@ -63,22 +72,27 @@ class ListTweetActivity : AppCompatActivity() {
         recyclerview.adapter = this@ListTweetActivity.adapter
     }
 
-    private fun setupButton() =  with(binding) {
-        btnSearch.setOnClickListener() {
-            if(etQuery.text.toString().isNotEmpty()){
-                viewModel.searchTweetsByQuery(etQuery.text.toString(), isConnected = isConnected)
-            } else {
+    private fun setupButton() = with(binding) {
+        btnSearch.setOnClickListener {
+            if (isConnected && etQuery.text.toString().isNotEmpty()) {
+                viewModel.searchTweetsByQuery(etQuery.text.toString())
+            } else if (etQuery.text.toString().isNotEmpty()) {
                 showMessage("Can't search empty text")
+            } else if (!isConnected) {
+                showMessage("Can't search without connectivity")
             }
         }
     }
 
     private fun setUpResourceObserver() {
-        viewModel.observeTweetFromLocal().observe(
-            this@ListTweetActivity
-        ) {
-            onTweetySuccess(it)
-        }
+        viewModel.remoteTweetState.observeResource(
+            this@ListTweetActivity,
+            loading = ::onTweetLoading,
+            success = ::onTweetySuccess,
+            error = ::onTweetError,
+            successWithoutContent = {}
+        )
+        viewModel.tweets().observe(this) { displayNewTweets(tweets = it) }
     }
 
 
@@ -87,27 +101,32 @@ class ListTweetActivity : AppCompatActivity() {
         emptyDataParent.hide()
     }
 
-    private fun onTweetySuccess(value: List<Tweet>?) = with(binding) {
+    private fun displayNewTweets(tweets: List<Tweet>?) = with(binding) {
         hideKeyboard()
         recyclerview.show()
         loadingScreen.hide()
         emptyDataParent.hide()
-        value?.let {
-            it.let { tweets ->
-                if (!isConnected) {
-                    showMessage(getString(R.string.currently_offline_showing_cache_data), Toast.LENGTH_LONG)
-                    toolbar.title = getString(R.string.toolbar_title_offline)
-                }
-                adapter.updateTweets(tweets)
-                if (tweets.isEmpty()) {
-                    emptyDataParent.visibility = View.VISIBLE
-                }
+        tweets?.let { tweets ->
+            if (!isConnected) {
+                showNoConnection()
             }
+            adapter.updateTweets(tweets)
+
         } ?: run {
             showMessage("no tweet to show")
         }
 
     }
+
+    private fun showNoConnection() = with(binding) {
+        showMessage(
+            getString(R.string.currently_offline_showing_cache_data),
+            Toast.LENGTH_LONG
+        )
+        toolbar.title = getString(R.string.toolbar_title_offline)
+    }
+
+    private fun onTweetySuccess(value: List<Tweet>?) { }
 
     private fun onTweetError(exception: Exception) = with(binding) {
         loadingScreen.hide()

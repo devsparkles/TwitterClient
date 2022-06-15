@@ -1,50 +1,36 @@
 package com.devsparkle.twitterclient.domain.di
 
-import com.devsparkle.twitterclient.domain.repository.local.LocalTweetRepository
-import com.devsparkle.twitterclient.domain.repository.remote.RemoteTweetRepository
 import com.devsparkle.twitterclient.domain.use_case.DeleteAllTweets
 import com.devsparkle.twitterclient.domain.use_case.GetTweetLifeSpan
-import com.devsparkle.twitterclient.domain.use_case.GetTweets
+import com.devsparkle.twitterclient.domain.use_case.SearchTweetsByQuery
 import com.devsparkle.twitterclient.domain.use_case.ObserveTweets
-import com.devsparkle.twitterclient.domain.use_case.PersistTweet
+import com.devsparkle.twitterclient.domain.use_case.PersistTweetsWithLifeSpan
 import com.devsparkle.twitterclient.domain.use_case.PersistTweets
 import org.koin.dsl.module
 
 val domainModule = module {
 
     factory {
-        DeleteAllTweets(
-            get<LocalTweetRepository>()
-        )
+        DeleteAllTweets(get())
     }
 
     factory {
-        GetTweetLifeSpan(
-            get<LocalTweetRepository>()
-        )
+        GetTweetLifeSpan(get())
     }
 
     factory {
-        ObserveTweets(
-            get<LocalTweetRepository>()
-        )
+        ObserveTweets(get())
     }
 
     factory {
-        GetTweets(
-            get<RemoteTweetRepository>()
-        )
+        SearchTweetsByQuery(get())
     }
 
     factory {
-        PersistTweets(
-            get<LocalTweetRepository>()
-        )
+        PersistTweets(get())
     }
 
     factory {
-        PersistTweet(
-            get<LocalTweetRepository>()
-        )
+        PersistTweetsWithLifeSpan(get())
     }
 }

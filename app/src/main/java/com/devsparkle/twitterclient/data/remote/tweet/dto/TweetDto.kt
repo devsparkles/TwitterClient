@@ -1,4 +1,4 @@
-package com.devsparkle.twitterclient.data.remote.casestudy.dto
+package com.devsparkle.twitterclient.data.remote.tweet.dto
 
 
 data class TweetDto(

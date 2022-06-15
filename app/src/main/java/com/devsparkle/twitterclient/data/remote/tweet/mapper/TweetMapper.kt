@@ -1,9 +1,9 @@
-package com.devsparkle.twitterclient.data.remote.casestudy.mapper
+package com.devsparkle.twitterclient.data.remote.tweet.mapper
 
 import com.devsparkle.twitterclient.base.resource.Resource
 import com.devsparkle.twitterclient.data.local.tweet.entities.TweetEntity
-import com.devsparkle.twitterclient.data.remote.casestudy.dto.TweetDto
-import com.devsparkle.twitterclient.data.remote.casestudy.dto.TweetWrapperDto
+import com.devsparkle.twitterclient.data.remote.tweet.dto.TweetDto
+import com.devsparkle.twitterclient.data.remote.tweet.dto.TweetWrapperDto
 import com.devsparkle.twitterclient.domain.model.Tweet
 import com.devsparkle.twitterclient.domain.model.TweetWrapper
 

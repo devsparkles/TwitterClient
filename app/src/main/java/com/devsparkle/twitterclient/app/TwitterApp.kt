@@ -1,7 +1,6 @@
 package com.devsparkle.twitterclient.app
 
 import android.app.Application
-import com.devsparkle.twitterclient.base.di.baseModule
 import com.devsparkle.twitterclient.data.di.localDataModule
 import com.devsparkle.twitterclient.data.di.remoteDataModule
 import com.devsparkle.twitterclient.domain.di.domainModule
@@ -26,8 +25,6 @@ class  TwitterApp : Application() {
                 androidContext(this@TwitterApp)
                 modules(
                     listOf(
-                        // shared module
-                        baseModule,
                         // data remote and local module
                         localDataModule,
                         remoteDataModule,

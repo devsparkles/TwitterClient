@@ -6,4 +6,22 @@
     </style>
 
     <style name="Theme.TwitterClient" parent="Base.Theme.TwitterClient" />
+
+
+
+    <style name="Widget.TwitterClient.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="errorIconDrawable">@null</item>
+        <item name="boxBackgroundMode">outline</item>
+        <item name="boxBackgroundColor">@color/white</item>
+        <item name="errorTextColor">#ED1C24</item>
+        <item name="boxStrokeErrorColor">#ED1C24</item>
+        <item name="android:layout_height">@dimen/spacing_32</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/spacing_4</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/spacing_4</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="TextInputEditText" parent="Widget.MaterialComponents.TextInputEditText.FilledBox">
+        <item name="android:paddingBottom">18dp</item>
+    </style>
 </resources>

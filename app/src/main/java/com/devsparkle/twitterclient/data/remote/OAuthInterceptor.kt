@@ -1,4 +1,4 @@
-package com.devsparkle.twitterclient.data.di
+package com.devsparkle.twitterclient.data.remote
 
 import okhttp3.Interceptor
 

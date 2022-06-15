@@ -14,8 +14,6 @@
             android:layout_height="match_parent"
             android:foreground="?attr/selectableItemBackground">
 
-
-
             <TextView
                 android:id="@+id/author_tweet"
                 android:layout_width="match_parent"
@@ -25,7 +23,7 @@
                 android:ellipsize="end"
                 android:fontFamily="@font/dm_sans"
                 android:textSize="11sp"
-                android:textAppearance="?attr/textAppearanceHeadline6"
+                android:textAppearance="?attr/textAppearanceHeadlineMedium"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

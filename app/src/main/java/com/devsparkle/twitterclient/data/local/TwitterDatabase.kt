@@ -13,7 +13,7 @@ import com.devsparkle.twitterclient.data.local.tweet.entities.TweetEntity
  *
  * Note that exportSchema should be true in production databases.
  */
-@Database(entities = [TweetEntity::class], version = 3, exportSchema = false)
+@Database(entities = [TweetEntity::class], version = 4, exportSchema = false)
 @TypeConverters(DateConverter::class, DateToStringConverter::class)
 abstract class TwitterDatabase : RoomDatabase() {
 

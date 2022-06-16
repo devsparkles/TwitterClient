@@ -14,8 +14,8 @@ import java.util.UUID
  */
 @Entity(tableName = "tweets")
 data class TweetEntity @JvmOverloads constructor(
-    @PrimaryKey @ColumnInfo(name = "entryid") var id: String = UUID.randomUUID().toString(),
-    @ColumnInfo(name = "id") var tweetId: String = "",
+    @PrimaryKey @ColumnInfo(name = "id") var id: String = UUID.randomUUID().toString(),
+    @ColumnInfo(name = "tweetId") var tweetId: String = "",
     @ColumnInfo(name = "text") var text: String = "",
     @ColumnInfo(name = "lifespan") var lifespan: Date? = Date(),
 )

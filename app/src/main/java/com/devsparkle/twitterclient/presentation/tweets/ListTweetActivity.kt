@@ -50,6 +50,9 @@ class ListTweetActivity : BaseActivity() {
         setUpRecyclerView()
         setupButton()
         setUpResourceObserver()
+        // You can easily configure the tweet lifespan here. 10 is in seconds
+        viewModel.configureTweetLifespan(9)
+        viewModel.launchDeleteOutdatedTweetJob()
     }
 
     private fun setupIsConnected() {
@@ -92,7 +95,7 @@ class ListTweetActivity : BaseActivity() {
             error = ::onTweetError,
             successWithoutContent = {}
         )
-        viewModel.tweets().observe(this) { displayNewTweets(tweets = it) }
+        viewModel.observableTweets().observe(this) { displayNewTweets(tweets = it) }
     }
 
 

@@ -1,36 +1,32 @@
 package com.devsparkle.twitterclient.domain.di
 
-import com.devsparkle.twitterclient.domain.use_case.DeleteAllTweets
-import com.devsparkle.twitterclient.domain.use_case.GetTweetLifeSpan
-import com.devsparkle.twitterclient.domain.use_case.SearchTweetsByQuery
-import com.devsparkle.twitterclient.domain.use_case.ObserveTweets
-import com.devsparkle.twitterclient.domain.use_case.PersistTweetsWithLifeSpan
-import com.devsparkle.twitterclient.domain.use_case.PersistTweets
+import com.devsparkle.twitterclient.domain.use_case.ConfigureTweetLifeSpan
+import com.devsparkle.twitterclient.domain.use_case.DeleteTweet
+import com.devsparkle.twitterclient.domain.use_case.GetObservableTweets
+import com.devsparkle.twitterclient.domain.use_case.GetTweets
+import com.devsparkle.twitterclient.domain.use_case.SearchAndSaveTweets
 import org.koin.dsl.module
 
 val domainModule = module {
 
     factory {
-        DeleteAllTweets(get())
+        SearchAndSaveTweets(get(), get())
     }
 
     factory {
-        GetTweetLifeSpan(get())
+        ConfigureTweetLifeSpan(get())
     }
 
     factory {
-        ObserveTweets(get())
+        GetObservableTweets(get())
     }
 
     factory {
-        SearchTweetsByQuery(get())
+        DeleteTweet(get())
     }
 
     factory {
-        PersistTweets(get())
+        GetTweets(get())
     }
 
-    factory {
-        PersistTweetsWithLifeSpan(get())
-    }
 }

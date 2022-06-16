@@ -2,7 +2,7 @@ package com.devsparkle.twitterclient.domain.use_case
 
 import com.devsparkle.twitterclient.domain.repository.local.LocalTweetRepository
 
-class DefineTweetLifeSpan(
+class ConfigureTweetLifeSpan(
     private val localTweetRepository: LocalTweetRepository
 ) {
     /**

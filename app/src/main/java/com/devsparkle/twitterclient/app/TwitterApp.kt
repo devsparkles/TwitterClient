@@ -12,12 +12,10 @@ import timber.log.Timber
 
 class  TwitterApp : Application() {
 
-
     override fun onCreate() {
         super.onCreate()
         setupKoin()
     }
-
 
     private fun setupKoin() {
         try {
@@ -32,7 +30,6 @@ class  TwitterApp : Application() {
                         domainModule,
                         // domain modules
                         tweetModule
-
                     )
                 )
             }

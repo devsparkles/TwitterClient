@@ -1,7 +1,7 @@
 package com.devsparkle.twitterclient.data.remote.tweet.repository
 
 import com.devsparkle.twitterclient.base.resource.Resource
-import com.devsparkle.twitterclient.data.remote.tweet.mapper.toDomain
+import com.devsparkle.twitterclient.data.mapper.toDomain
 import com.devsparkle.twitterclient.data.remote.tweet.service.TweetService
 import com.devsparkle.twitterclient.domain.model.Tweet
 import com.devsparkle.twitterclient.domain.repository.remote.RemoteTweetRepository

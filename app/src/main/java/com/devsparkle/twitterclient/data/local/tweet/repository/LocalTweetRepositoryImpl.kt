@@ -5,8 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 import com.devsparkle.twitterclient.base.resource.Resource
 import com.devsparkle.twitterclient.data.local.tweet.dao.TweetDao
-import com.devsparkle.twitterclient.data.remote.tweet.mapper.toDomainTweets
-import com.devsparkle.twitterclient.data.remote.tweet.mapper.toEntity
+import com.devsparkle.twitterclient.data.mapper.toDomainTweets
+import com.devsparkle.twitterclient.data.mapper.toEntity
 import com.devsparkle.twitterclient.domain.model.Tweet
 import com.devsparkle.twitterclient.domain.repository.local.LocalTweetRepository
 
@@ -30,13 +30,17 @@ class LocalTweetRepositoryImpl(
         dao.deleteTweets()
     }
 
+    override fun deleteTweet(tweet: Tweet): Int {
+        return dao.deleteTweet(tweet.toEntity())
+    }
+
     override fun observeTweets(): LiveData<List<Tweet>> {
         val tweetsLiveData = dao.observeTweets()
         return tweetsLiveData.map { it.toDomainTweets() }
     }
 
-    override suspend fun getCaseStudies(): Resource<List<Tweet>?> {
-        return Resource.of<List<Tweet>?> {
+    override suspend fun getTweets(): Resource<List<Tweet>?> {
+        return Resource.of {
             dao.getTweets().toDomainTweets()
         }
     }

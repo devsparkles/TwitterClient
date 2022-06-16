@@ -72,20 +72,8 @@ android {
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.8.0'
-    implementation 'androidx.appcompat:appcompat:1.4.2'
-    implementation 'com.google.android.material:material:1.7.0-alpha02'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.4.2'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.4.2'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
-
-
-
-    // -- Google stuff -- //
+    // -- Google section -- //
     // UI
     implementation "androidx.core:core-ktx:1.8.0"
     implementation "androidx.appcompat:appcompat:$appCompatVersion"
@@ -95,55 +83,61 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview:$recyclerViewVersion"
 
     // Architecture Components
-    implementation "androidx.room:room-runtime:$roomVersion"
-    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.5.0-alpha06'
-    kapt "androidx.room:room-compiler:$roomVersion"
-    implementation "androidx.room:room-ktx:$roomVersion"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$archLifecycleVersion"
+    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.5.0-alpha07'
+    implementation "androidx.lifecycle:lifecycle-common-java8:$archLifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$archLifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$archLifecycleVersion"
-    implementation "androidx.lifecycle:lifecycle-common-java8:$archLifecycleVersion"
-    implementation "androidx.preference:preference-ktx:$preferenceKtxVersion"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$archLifecycleVersion"
     implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
+    implementation "androidx.preference:preference-ktx:$preferenceKtxVersion"
+    implementation "androidx.room:room-ktx:$roomVersion"
+    implementation "androidx.room:room-runtime:$roomVersion"
+    kapt "androidx.room:room-compiler:$roomVersion"
 
     // -- Testing section -- //
     // Unit testing
-    testImplementation "junit:junit:$junitVersion"
-    testImplementation "org.mockito.kotlin:mockito-kotlin:$mockitoKotlinVersion"
     testImplementation "androidx.arch.core:core-testing:$archTestingVersion"
+    testImplementation "androidx.test.espresso:espresso-core:3.5.0-alpha07"
+    testImplementation "androidx.test:rules:1.4.1-alpha07"
+    testImplementation "androidx.test:runner:1.4.0"
     testImplementation "com.github.javafaker:javafaker:$javafakerVersion"
-    testImplementation "androidx.test:runner:$androidXTestRunnerVersion"
-    testImplementation 'androidx.test.ext:junit:1.1.4-alpha06'
-    testImplementation "androidx.test.espresso:espresso-core:3.5.0-alpha06"
-    testImplementation "androidx.test:rules:1.4.1-alpha06"
     testImplementation "com.google.truth:truth:$truthVersion"
+    testImplementation "io.insert-koin:koin-test-junit4:$koinJunit4Version"
     testImplementation "io.insert-koin:koin-test:$koinVersion"
-    testImplementation "io.insert-koin:koin-test-junit4:$koinVersion"
-    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinCoroutinesTestVersion"
-    //testImplementation "org.robolectric:robolectric:$robolectricVersion"
-    testImplementation "io.mockk:mockk:1.12.2"
+    testImplementation "io.mockk:mockk:1.12.4"
+    testImplementation "junit:junit:$junitVersion"
+    testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinCoroutinesTestVersion") {
+        // https://github.com/Kotlin/kotlinx.coroutines/tree/master/kotlinx-coroutines-debug#debug-agent-and-android
+        exclude group: "org.jetbrains.kotlinx", module: "kotlinx-coroutines-debug"
+    }
+    testImplementation "org.mockito.kotlin:mockito-kotlin:$mockitoKotlinVersion"
+    testImplementation 'androidx.test.ext:junit:1.1.4-alpha07'
     testImplementation 'com.android.support.test:rules:1.0.2'
     testImplementation 'com.android.support.test:runner:1.0.2'
-    testImplementation "org.mockito.kotlin:mockito-kotlin:4.0.0"
-
     // integration testing
-    androidTestImplementation "org.mockito.kotlin:mockito-kotlin:4.0.0"
-    androidTestImplementation 'androidx.test.ext:junit:1.1.4-alpha06'
-    androidTestImplementation "androidx.test.espresso:espresso-core:3.5.0-alpha06"
+    androidTestImplementation "androidx.test.espresso:espresso-core:3.5.0-alpha07"
+    androidTestImplementation "androidx.test:runner:1.4.0"
+    androidTestImplementation "io.insert-koin:koin-test-junit4:$koinJunit4Version"
     androidTestImplementation "io.insert-koin:koin-test:$koinVersion"
-    androidTestImplementation "io.insert-koin:koin-test-junit4:$koinVersion"
+    androidTestImplementation "io.mockk:mockk:1.12.4"
+
+    androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinCoroutinesTestVersion") {
+        // https://github.com/Kotlin/kotlinx.coroutines/tree/master/kotlinx-coroutines-debug#debug-agent-and-android
+        exclude group: "org.jetbrains.kotlinx", module: "kotlinx-coroutines-debug"
+    }
+
     androidTestImplementation "org.mockito.kotlin:mockito-kotlin:$mockitoKotlinVersion"
     androidTestImplementation "org.mockito:mockito-android:$mockitoAndroidVersion"
-    androidTestImplementation "androidx.test:runner:$androidXTestRunnerVersion"
-    androidTestImplementation "androidx.test.espresso:espresso-core:3.5.0-alpha06"
-    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinCoroutinesTestVersion"
-    // androidTestImplementation "org.robolectric:robolectric:$robolectricVersion"
-    androidTestImplementation "io.mockk:mockk:1.12.2"
-    // -- Third party stuff -- //
+    androidTestImplementation 'androidx.test.ext:junit:1.1.4-alpha07'
+
+
+    // -- Third party section -- //
     // Dependency injection - Koin for Kotlin apps
     implementation "io.insert-koin:koin-android:$koinVersion"
+    implementation "io.insert-koin:koin-androidx-workmanager:$koinVersion"
     implementation "org.greenrobot:eventbus:3.3.1"
+
     // Image displaying - Glide
     implementation "com.github.bumptech.glide:glide:$glideVersion"
     implementation "com.github.bumptech.glide:annotations:$glideVersion"
@@ -171,6 +165,10 @@ dependencies {
 
     implementation "androidx.test.espresso:espresso-idling-resource:3.4.0"
 
+
+
+
+    // -- Worker --
     def work_version = "2.7.1"
 
     // (Java only)

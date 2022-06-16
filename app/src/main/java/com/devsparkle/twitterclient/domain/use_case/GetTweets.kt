@@ -1,13 +1,13 @@
 package com.devsparkle.twitterclient.domain.use_case
 
-import androidx.lifecycle.LiveData
+import com.devsparkle.twitterclient.base.resource.Resource
 import com.devsparkle.twitterclient.domain.model.Tweet
 import com.devsparkle.twitterclient.domain.repository.local.LocalTweetRepository
 
-class ObserveTweets(
+class GetTweets(
     private val localTweetRepository: LocalTweetRepository
 ) {
-    operator fun invoke(): LiveData<List<Tweet>> {
-        return localTweetRepository.observeTweets()
+    suspend operator fun invoke(): Resource<List<Tweet>?> {
+        return localTweetRepository.getTweets()
     }
 }

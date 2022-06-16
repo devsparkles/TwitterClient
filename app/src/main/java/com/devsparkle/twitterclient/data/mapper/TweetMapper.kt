@@ -1,4 +1,4 @@
-package com.devsparkle.twitterclient.data.remote.tweet.mapper
+package com.devsparkle.twitterclient.data.mapper
 
 import com.devsparkle.twitterclient.base.resource.Resource
 import com.devsparkle.twitterclient.data.local.tweet.entities.TweetEntity
@@ -32,8 +32,9 @@ fun TweetWrapperDto?.toDomain(): TweetWrapper {
 
 fun TweetDto?.toDomain(): Tweet {
     return Tweet(
-        this?.id,
-        this?.text,
+        id = this?.id,
+        tweetId = null,
+        text = this?.text,
         lifespan = null
     )
 }
@@ -41,7 +42,8 @@ fun TweetDto?.toDomain(): Tweet {
 
 fun Tweet.toEntity(): TweetEntity {
     return TweetEntity(
-        tweetId = this.id ?: "",
+        id = this.id ?: "",
+        tweetId = this.tweetId ?: "",
         text = this.text ?: "",
         lifespan = this.lifespan
     )
@@ -50,9 +52,10 @@ fun Tweet.toEntity(): TweetEntity {
 
 fun TweetEntity?.toDomain(): Tweet {
     return Tweet(
-        this?.id,
-        this?.text,
-        this?.lifespan
+        id=this?.id,
+        tweetId=this?.tweetId,
+        text=this?.text,
+        lifespan=this?.lifespan
     )
 }
 

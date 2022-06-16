@@ -1,13 +1,12 @@
 package com.devsparkle.twitterclient.domain.use_case
 
-
+import com.devsparkle.twitterclient.domain.model.Tweet
 import com.devsparkle.twitterclient.domain.repository.local.LocalTweetRepository
 
-
-class DeleteAllTweets(
+class DeleteTweet(
     private val localTweetRepository: LocalTweetRepository
 ) {
-    suspend operator fun invoke() {
-        localTweetRepository.deleteAllTweets()
+    operator fun invoke(tweet: Tweet): Int {
+        return localTweetRepository.deleteTweet(tweet)
     }
 }

@@ -2,10 +2,12 @@ package com.devsparkle.twitterclient.data.local.tweet.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.devsparkle.twitterclient.data.local.tweet.entities.TweetEntity
+import com.devsparkle.twitterclient.domain.model.Tweet
 
 /**
  * Data Access Object for the Tweets table.
@@ -54,4 +56,9 @@ interface TweetDao {
     suspend fun deleteTweets()
 
 
+    /**
+     * Delete tweet
+     */
+    @Delete
+    fun deleteTweet(tweet: TweetEntity): Int
 }

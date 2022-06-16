@@ -28,7 +28,7 @@ interface TweetDao {
      * @return all tweets.
      */
     @Query("SELECT * FROM tweets")
-    suspend fun getTweets(): List<TweetEntity>
+    fun getTweets(): List<TweetEntity>
 
 
     /**

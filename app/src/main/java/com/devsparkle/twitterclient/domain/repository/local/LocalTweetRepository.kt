@@ -6,7 +6,7 @@ import com.devsparkle.twitterclient.domain.model.Tweet
 import org.w3c.dom.Text
 
 interface LocalTweetRepository {
-    suspend fun getTweets():  Resource<List<Tweet>?>
+    fun getTweets():  List<Tweet>
     fun observeTweets(): LiveData<List<Tweet>>
     suspend fun persistTweets(list: List<Tweet>)
     suspend fun persistTweet(tweet:Tweet)

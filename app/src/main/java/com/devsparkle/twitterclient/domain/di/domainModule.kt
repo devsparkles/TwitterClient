@@ -1,9 +1,8 @@
 package com.devsparkle.twitterclient.domain.di
 
 import com.devsparkle.twitterclient.domain.use_case.ConfigureTweetLifeSpan
-import com.devsparkle.twitterclient.domain.use_case.DeleteTweet
 import com.devsparkle.twitterclient.domain.use_case.GetObservableTweets
-import com.devsparkle.twitterclient.domain.use_case.GetTweets
+import com.devsparkle.twitterclient.domain.use_case.DeleteOldTweet
 import com.devsparkle.twitterclient.domain.use_case.SearchAndSaveTweets
 import org.koin.dsl.module
 
@@ -20,13 +19,7 @@ val domainModule = module {
     factory {
         GetObservableTweets(get())
     }
-
     factory {
-        DeleteTweet(get())
+        DeleteOldTweet(get())
     }
-
-    factory {
-        GetTweets(get())
-    }
-
 }

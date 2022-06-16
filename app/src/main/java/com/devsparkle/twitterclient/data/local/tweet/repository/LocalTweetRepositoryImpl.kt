@@ -39,10 +39,9 @@ class LocalTweetRepositoryImpl(
         return tweetsLiveData.map { it.toDomainTweets() }
     }
 
-    override suspend fun getTweets(): Resource<List<Tweet>?> {
-        return Resource.of {
-            dao.getTweets().toDomainTweets()
-        }
+    override fun getTweets(): List<Tweet> {
+        return dao.getTweets().toDomainTweets()
+
     }
 
     override suspend fun persistTweets(list: List<Tweet>) {

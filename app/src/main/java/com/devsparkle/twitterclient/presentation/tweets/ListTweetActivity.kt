@@ -1,6 +1,8 @@
 package com.devsparkle.twitterclient.presentation.tweets
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,6 +25,7 @@ class ListTweetActivity : BaseActivity() {
 
     private val TAG: String = "ListTweetActivity"
 
+
     lateinit var binding: ActivityListTweetBinding
     private val viewModel by viewModel<ListTweetViewModel>()
     private val adapter by inject<TweetAdapter> {
@@ -31,10 +34,9 @@ class ListTweetActivity : BaseActivity() {
         )
     }
 
-    private fun onTapListElementSelected(cs: Tweet) = with(binding) {
-        Toast.makeText(root.context, "detail tweet ${cs.id}", Toast.LENGTH_SHORT)
-            .show()
-    }
+    var handler: Handler = Handler(Looper.getMainLooper())
+    var runnable: Runnable? = null
+    var delay = 5000
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,8 +54,22 @@ class ListTweetActivity : BaseActivity() {
         setUpResourceObserver()
         // You can easily configure the tweet lifespan here. 10 is in seconds
         viewModel.configureTweetLifespan(9)
-        viewModel.launchDeleteOutdatedTweetJob()
     }
+
+    override fun onResume() {
+        handler.postDelayed(Runnable {
+            handler.postDelayed(runnable!!, delay.toLong())
+            viewModel.deleteOutDatedTweet()
+        }.also { runnable = it }, delay.toLong())
+        super.onResume()
+    }
+
+    private fun onTapListElementSelected(cs: Tweet) = with(binding) {
+        Toast.makeText(root.context, "detail tweet ${cs.id}", Toast.LENGTH_SHORT)
+            .show()
+    }
+
+
 
     private fun setupIsConnected() {
         connectionLiveData.observe(this) {

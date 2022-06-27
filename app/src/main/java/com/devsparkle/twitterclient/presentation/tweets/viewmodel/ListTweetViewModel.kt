@@ -7,19 +7,19 @@ import com.devsparkle.twitterclient.base.BaseViewModel
 import com.devsparkle.twitterclient.base.resource.Resource
 import com.devsparkle.twitterclient.domain.model.Tweet
 import com.devsparkle.twitterclient.domain.use_case.ConfigureTweetLifeSpan
-import com.devsparkle.twitterclient.domain.use_case.GetObservableTweets
-import com.devsparkle.twitterclient.domain.use_case.DeleteOldTweet
-import com.devsparkle.twitterclient.domain.use_case.SearchAndSaveTweets
+import com.devsparkle.twitterclient.domain.use_case.GetLocalTweets
+import com.devsparkle.twitterclient.domain.use_case.DeleteLocalOldTweet
+import com.devsparkle.twitterclient.domain.use_case.GetRemoteTweetStream
 import com.devsparkle.twitterclient.utils.wrapEspressoIdlingResource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class ListTweetViewModel(
-    private val deleteOldTweet: DeleteOldTweet,
+    private val deleteLocalOldTweet: DeleteLocalOldTweet,
     private val configureTweetLifeSpan: ConfigureTweetLifeSpan,
-    private val searchAndSaveTweets: SearchAndSaveTweets,
-    private val getObservableTweets: GetObservableTweets,
+    private val getRemoteTweetStream: GetRemoteTweetStream,
+    private val getLocalTweets: GetLocalTweets,
 ) : BaseViewModel() {
 
     private val _remoteTweetState = MutableLiveData<Resource<List<Tweet>?>>()
@@ -27,7 +27,7 @@ class ListTweetViewModel(
 
 
     fun deleteOutDatedTweet() {
-        deleteOldTweet()
+        deleteLocalOldTweet()
     }
 
     /**
@@ -43,7 +43,7 @@ class ListTweetViewModel(
      * Observe tweets from the local database
      */
     fun observableTweets(): LiveData<List<Tweet>> {
-        return getObservableTweets()
+        return getLocalTweets()
     }
 
     /***
@@ -51,13 +51,13 @@ class ListTweetViewModel(
      * Delete all previous tweets in the local database, #
      * Save new Tweets with an interval
      */
-    fun searchTweetsByQuery(query: String) {
+    fun getTweetStream(query: String) {
         viewModelScope.launch {
             if (isNetworkAvailable.value == true) {
                 _remoteTweetState.postValue(Resource.Loading())
                 withContext(Dispatchers.IO) {
                     wrapEspressoIdlingResource {
-                        val response = searchAndSaveTweets(query)
+                        val response = getRemoteTweetStream(query)
                         if (response.isAnError()) {
                             _remoteTweetState.postValue(Resource.Error())
                         }

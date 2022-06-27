@@ -5,7 +5,7 @@ import com.devsparkle.twitterclient.domain.repository.local.LocalTweetRepository
 import com.devsparkle.twitterclient.utils.extensions.IsFutureDate
 import timber.log.Timber
 
-class DeleteOldTweet(private val localTweetRepository: LocalTweetRepository) {
+class DeleteLocalOldTweet(private val localTweetRepository: LocalTweetRepository) {
 
     operator fun invoke() {
         try {

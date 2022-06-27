@@ -1,5 +1,6 @@
 package com.devsparkle.twitterclient.presentation.tweets
 
+import android.os.Build.VERSION_CODES.P
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -24,6 +25,8 @@ import org.koin.core.parameter.parametersOf
 class ListTweetActivity : BaseActivity() {
 
     private val TAG: String = "ListTweetActivity"
+    private val TWEET_LIFESPAN = 10
+    private var delay = 5000 // tweet cleaning rate (every 5 seconds by default )
 
 
     lateinit var binding: ActivityListTweetBinding
@@ -34,9 +37,8 @@ class ListTweetActivity : BaseActivity() {
         )
     }
 
-    var handler: Handler = Handler(Looper.getMainLooper())
-    var runnable: Runnable? = null
-    var delay = 5000
+    private var handler: Handler = Handler(Looper.getMainLooper())
+    private var runnable: Runnable? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,18 +52,27 @@ class ListTweetActivity : BaseActivity() {
         setupIsConnected()
         setupToolbar()
         setUpRecyclerView()
-        setupButton()
         setUpResourceObserver()
         // You can easily configure the tweet lifespan here. 10 is in seconds
-        viewModel.configureTweetLifespan(9)
+        viewModel.configureTweetLifespan(TWEET_LIFESPAN)
+        viewModel.getTweetStream("android coding")
     }
 
-    override fun onResume() {
-        handler.postDelayed(Runnable {
-            handler.postDelayed(runnable!!, delay.toLong())
-            viewModel.deleteOutDatedTweet()
-        }.also { runnable = it }, delay.toLong())
-        super.onResume()
+    private fun startRemovingOldTweet() {
+        handler
+            .postDelayed(Runnable {
+                handler.postDelayed(runnable!!, delay.toLong())
+                viewModel.deleteOutDatedTweet()
+            }.also {
+                runnable = it
+            },
+                delay.toLong()
+            )
+    }
+
+    private fun stopRemovingOldTweet() {
+        handler.removeCallbacksAndMessages(null)
+
     }
 
     private fun onTapListElementSelected(cs: Tweet) = with(binding) {
@@ -69,15 +80,19 @@ class ListTweetActivity : BaseActivity() {
             .show()
     }
 
-
-
     private fun setupIsConnected() {
         connectionLiveData.observe(this) {
             viewModel.isNetworkAvailable.value = it
+            if(it){
+                // if the app is connected the process of removing out dated tweet will be started
+                startRemovingOldTweet()
+            } else {
+                // if the app is not connected the process of removing outdated tweets will be stopped.
+                stopRemovingOldTweet()
+            }
         }
         viewModel.isNetworkAvailable.value = isConnected
     }
-
 
     private fun setupToolbar() = with(binding) {
         toolbar.title = getString(R.string.toolbar_title_default)
@@ -89,18 +104,6 @@ class ListTweetActivity : BaseActivity() {
         recyclerview.setHasFixedSize(true)
         recyclerview.layoutManager = layoutManager
         recyclerview.adapter = this@ListTweetActivity.adapter
-    }
-
-    private fun setupButton() = with(binding) {
-        btnSearch.setOnClickListener {
-            if (isConnected && etQuery.text.toString().isNotEmpty()) {
-                viewModel.searchTweetsByQuery(etQuery.text.toString())
-            } else if (etQuery.text.toString().isNotEmpty()) {
-                showMessage("Can't search empty text")
-            } else if (!isConnected) {
-                showMessage("Can't search without connectivity")
-            }
-        }
     }
 
     private fun setUpResourceObserver() {
@@ -145,7 +148,7 @@ class ListTweetActivity : BaseActivity() {
         toolbar.title = getString(R.string.toolbar_title_offline)
     }
 
-    private fun onTweetySuccess(value: List<Tweet>?) { }
+    private fun onTweetySuccess(value: List<Tweet>?) {}
 
     private fun onTweetError(exception: Exception) = with(binding) {
         loadingScreen.hide()

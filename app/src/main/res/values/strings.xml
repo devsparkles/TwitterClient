@@ -12,4 +12,6 @@
     <string name="search">Search</string>
 
     <string name="search_twitter">Search Twitter</string>
+    <string name="error_search_empty_text">Can\'t search empty text</string>
+    <string name="error_search_no_connectivity">Can\'t search without connectivity</string>
 </resources>

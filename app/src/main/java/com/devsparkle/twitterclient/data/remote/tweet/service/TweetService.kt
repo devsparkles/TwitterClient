@@ -1,13 +1,17 @@
 package com.devsparkle.twitterclient.data.remote.tweet.service
 
 
-import com.devsparkle.twitterclient.data.remote.tweet.dto.TweetWrapperDto
+
+import okhttp3.ResponseBody
+import retrofit2.Call
 import retrofit2.http.GET
-import retrofit2.http.Query
+import retrofit2.http.Streaming
 
 interface TweetService {
 
-    @GET("/2/tweets/search/recent")
-    suspend fun getTweets(@Query("query") query: String): TweetWrapperDto?
+    @Streaming
+    @GET("/2/tweets/search/stream")
+    suspend fun getTweets():  Call<ResponseBody>
+
 
 }

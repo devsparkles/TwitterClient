@@ -4,7 +4,8 @@ buildscript {
     ext.navigationVersion = '2.4.2'
     repositories {
         google()
-
+        maven { url "https://oss.jfrog.org/libs-snapshot" }
+        maven { url 'https://jitpack.io' }
     }
     dependencies {
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$navigationVersion"

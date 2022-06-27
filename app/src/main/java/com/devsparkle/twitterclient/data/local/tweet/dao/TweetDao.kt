@@ -6,6 +6,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import com.devsparkle.twitterclient.data.local.tweet.entities.TweetEntity
 import com.devsparkle.twitterclient.domain.model.Tweet
 
@@ -14,6 +15,12 @@ import com.devsparkle.twitterclient.domain.model.Tweet
  */
 @Dao
 interface TweetDao {
+
+    /***
+     * Find by text
+     */
+    @Query("SELECT * FROM tweets WHERE text=:text")
+    fun findByText(text : String): List<TweetEntity>
 
     /**
      * Observe tweets
@@ -47,7 +54,6 @@ interface TweetDao {
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTweets(vararg tweets: TweetEntity)
-
 
     /**
      * Delete all tweets.

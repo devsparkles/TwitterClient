@@ -3,8 +3,11 @@ package com.devsparkle.twitterclient.data.di
 
 import com.devsparkle.twitterclient.BuildConfig
 import com.devsparkle.twitterclient.data.remote.RemoteRetrofitBuilder
+import com.devsparkle.twitterclient.data.remote.rule.repository.RemoteRuleRepositoryImpl
+import com.devsparkle.twitterclient.data.remote.rule.service.RuleService
 import com.devsparkle.twitterclient.data.remote.tweet.repository.RemoteTweetRepositoryImpl
 import com.devsparkle.twitterclient.data.remote.tweet.service.TweetService
+import com.devsparkle.twitterclient.domain.repository.remote.RemoteRuleRepository
 import com.devsparkle.twitterclient.domain.repository.remote.RemoteTweetRepository
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.qualifier.named
@@ -27,6 +30,11 @@ val remoteDataModule = module {
         RemoteRetrofitBuilder.createRetrofit(androidContext(), get<String>(named(SERVER_URL)))
     }
 
+    factory {
+        RemoteRuleRepositoryImpl(
+            get<RuleService>()
+        ) as RemoteRuleRepository
+    }
 
     factory {
         RemoteTweetRepositoryImpl(
@@ -34,6 +42,11 @@ val remoteDataModule = module {
         ) as RemoteTweetRepository
     }
 
+    factory {
+        getRuleService(
+            get<Retrofit>(named(TWITTER_RETROFIT))
+        )
+    }
 
     factory {
         getCaseStudyService(
@@ -42,6 +55,9 @@ val remoteDataModule = module {
     }
 
 }
+
+private fun getRuleService(retrofit: Retrofit): RuleService =
+    retrofit.create(RuleService::class.java)
 
 private fun getCaseStudyService(retrofit: Retrofit): TweetService =
     retrofit.create(TweetService::class.java)

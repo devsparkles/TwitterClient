@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import com.devsparkle.twitterclient.domain.model.Tweet
 import com.devsparkle.twitterclient.domain.repository.local.LocalTweetRepository
 
-class GetObservableTweets(
+class GetLocalTweets(
     private val localTweetRepository: LocalTweetRepository
 ) {
     operator fun invoke(): LiveData<List<Tweet>> {

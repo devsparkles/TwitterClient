@@ -16,8 +16,7 @@ android {
         targetSdk rootProject.targetSdkVersion
         versionCode 1
         versionName "1.0"
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.devsparkle.twitterclient.runner.ApiTestRunner"
     }
 
     buildTypes {
@@ -107,7 +106,7 @@ dependencies {
     testImplementation "io.insert-koin:koin-test:$koinVersion"
     testImplementation "io.mockk:mockk:1.12.4"
     testImplementation "junit:junit:$junitVersion"
-    testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinCoroutinesTestVersion") {
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinCoroutinesTestVersion") {
         // https://github.com/Kotlin/kotlinx.coroutines/tree/master/kotlinx-coroutines-debug#debug-agent-and-android
         exclude group: "org.jetbrains.kotlinx", module: "kotlinx-coroutines-debug"
     }
@@ -164,5 +163,4 @@ dependencies {
 
 
     implementation "androidx.test.espresso:espresso-idling-resource:3.4.0"
-
 }

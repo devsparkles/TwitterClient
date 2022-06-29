@@ -25,7 +25,7 @@ fun List<TweetDto>.toDomain(): MutableList<Tweet> {
 
 fun TweetWrapperDto?.toDomain(): TweetWrapper {
     return TweetWrapper(
-        this?.data?.toDomain(),
+        tweet = this?.data.toDomain()
     )
 }
 

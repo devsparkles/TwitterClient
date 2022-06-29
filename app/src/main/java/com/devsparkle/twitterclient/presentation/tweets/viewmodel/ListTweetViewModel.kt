@@ -6,10 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.devsparkle.twitterclient.base.BaseViewModel
 import com.devsparkle.twitterclient.base.resource.Resource
 import com.devsparkle.twitterclient.domain.model.Tweet
-import com.devsparkle.twitterclient.domain.use_case.ConfigureTweetLifeSpan
-import com.devsparkle.twitterclient.domain.use_case.GetLocalTweets
-import com.devsparkle.twitterclient.domain.use_case.DeleteLocalOldTweet
-import com.devsparkle.twitterclient.domain.use_case.GetRemoteTweetStream
+import com.devsparkle.twitterclient.domain.use_case.*
 import com.devsparkle.twitterclient.utils.wrapEspressoIdlingResource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,6 +16,7 @@ class ListTweetViewModel(
     private val deleteLocalOldTweet: DeleteLocalOldTweet,
     private val configureTweetLifeSpan: ConfigureTweetLifeSpan,
     private val getRemoteTweetStream: GetRemoteTweetStream,
+    private val addNewRules: AddNewRules,
     private val getLocalTweets: GetLocalTweets,
 ) : BaseViewModel() {
 
@@ -57,7 +55,9 @@ class ListTweetViewModel(
                 _remoteTweetState.postValue(Resource.Loading())
                 withContext(Dispatchers.IO) {
                     wrapEspressoIdlingResource {
-                        val response = getRemoteTweetStream(query)
+                        val rules  = listOf<String>("cats has:images","dogs has:images")
+                        addNewRules(rules)
+                        val response = getRemoteTweetStream()
                         if (response.isAnError()) {
                             _remoteTweetState.postValue(Resource.Error())
                         }

@@ -1,15 +1,16 @@
 package com.devsparkle.twitterclient.domain.di
 
-import com.devsparkle.twitterclient.domain.use_case.ConfigureTweetLifeSpan
-import com.devsparkle.twitterclient.domain.use_case.GetLocalTweets
-import com.devsparkle.twitterclient.domain.use_case.DeleteLocalOldTweet
-import com.devsparkle.twitterclient.domain.use_case.GetRemoteTweetStream
+import com.devsparkle.twitterclient.domain.use_case.*
 import org.koin.dsl.module
 
 val domainModule = module {
 
     factory {
-        GetRemoteTweetStream(get(), get(), get())
+        GetRemoteTweetStream(get(), get())
+    }
+
+    factory {
+        AddNewRules(get())
     }
 
     factory {

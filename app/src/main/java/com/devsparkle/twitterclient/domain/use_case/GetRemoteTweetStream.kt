@@ -1,83 +1,91 @@
 package com.devsparkle.twitterclient.domain.use_case
 
 
+import android.util.Log
 import com.devsparkle.twitterclient.base.resource.Resource
-import com.devsparkle.twitterclient.domain.model.Tweet
+import com.devsparkle.twitterclient.data.mapper.toDomain
+import com.devsparkle.twitterclient.data.remote.OAuthInterceptor
+import com.devsparkle.twitterclient.data.remote.tweet.dto.TweetWrapperDto
 import com.devsparkle.twitterclient.domain.repository.local.LocalTweetRepository
-import com.devsparkle.twitterclient.domain.repository.remote.RemoteRuleRepository
 import com.devsparkle.twitterclient.domain.repository.remote.RemoteTweetRepository
+import com.devsparkle.twitterclient.utils.extensions.addSeconds
 import com.google.gson.Gson
-import kotlinx.coroutines.flow.flow
-import okhttp3.ResponseBody
-import okio.BufferedSource
-import retrofit2.Call
+import io.reactivex.Scheduler
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.flow.buffer
+import kotlinx.coroutines.flow.collect
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
+import okio.Buffer
+import java.nio.charset.Charset
+import java.util.*
 
 
 class GetRemoteTweetStream(
-    private val remoteRuleRepository: RemoteRuleRepository,
     private val remoteTweetRepository: RemoteTweetRepository,
     private val localTweetRepository: LocalTweetRepository
 ) {
 
-
-    suspend operator fun invoke(query: String): Resource<List<Tweet>> {
-
+    suspend operator fun invoke(): Resource<Boolean> {
         try {
-            // get all current rules
-            val rules = remoteRuleRepository.getRules()
+            val interval = localTweetRepository.getTweetLifeSpan()
+            localTweetRepository.deleteAllTweets()
+            var lastDateInserted = Date()
 
-            // delete previous rules
-            val rulesIds = rules.map { it.id }
-            if (rulesIds.isNotEmpty()) {
-                remoteRuleRepository.deleteRuleById(rulesIds)
+                //  remoteTweetRepository.getTweets()
+
+            val client: OkHttpClient = OkHttpClient()
+                .newBuilder()
+                .addInterceptor(OAuthInterceptor("Bearer", "AAAAAAAAAAAAAAAAAAAAALcSdgEAAAAAW8S0SWmcUaiQoM4%2F0Q%2FWWJ7Hoyk%3DydCCizNCgGsExYExd8XL9QUNzOCB3G920AVYayotiinWYzyOP6"))
+                .build()
+            val request: Request = Request.Builder()
+                .url("https://api.twitter.com/2/tweets/search/stream")
+                .method("GET", null)
+                .build()
+            val response: Response = client.newCall(request).execute()
+            val source = response.body?.source()
+            val buffer = Buffer()
+            while(!source!!.exhausted()){
+                response.body?.source()?.read(buffer, 8192)
+                val data = buffer.readString(Charset.defaultCharset())
+                println("yo" + data)
             }
 
-            // add wanted rules
-            val rule2Add = mutableListOf<String>()
-            rule2Add.add(query)
-            remoteRuleRepository.addRule(rule2Add)
+
+
             // proceed to open the stream
-            val response: Call<ResponseBody>? = remoteTweetRepository.getTweets()
-
-            if (response != null) {
-                flow<Tweet> {
-
-
-                }
-            }
-
-//           val  response?.execute()
-//            if (tweets.isNotAnError()) {
-//                val interval = localTweetRepository.getTweetLifeSpan()
-//
-//                localTweetRepository.deleteAllTweets()
-//                var lastDateInserted = Date()
-//                val tweets = tweetsResponse.value()
-//                if (tweets != null) {
-//                    for (tweet in tweets) {
-//                        lastDateInserted = lastDateInserted.addSeconds(interval)
-//                        tweet.lifespan = lastDateInserted
-//                        localTweetRepository.persistTweet(tweet)
+//            remoteTweetRepository.getTweets()
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe({
+//                    it?.let {
+//                        while(!it.source().exhausted()){
+//                            println("yo" + it.source().readUtf8Line())
+//                        }
 //                    }
+//                },{
+//                    println("yoerror" + it.message.toString())
+//                })
+
+//            remoteTweetRepository.getLine().buffer(50).collect {
+//                Log.d("line", it)
+//                val tweet: TweetWrapperDto =
+//                    Gson().fromJson(it, TweetWrapperDto::class.java)
+//
+//                tweet.data.toDomain().let { t ->
+//                    lastDateInserted = lastDateInserted.addSeconds(interval)
+//                    t.lifespan = lastDateInserted
+//                    localTweetRepository.persistTweet(t)
 //                }
-//                return Resource.SuccessWithoutContent()
-//            } else {
-//                return Resource.Error()
 //            }
             return Resource.SuccessWithoutContent()
         } catch (e: Exception) {
             return Resource.Error(e)
+
         }
 
     }
-
-//    fun statuses(source: BufferedSource) = flow {
-//        val gson = Gson()
-//        while (!source.exhausted()) {
-//            val s: Status = gson.fromJson(source.readUtf8Line(), Status::class.java)
-//            subscriber.onNext(s)
-//        }
-//    }
-
 
 }

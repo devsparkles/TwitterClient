@@ -55,7 +55,7 @@ class ListTweetViewModel(
                 _remoteTweetState.postValue(Resource.Loading())
                 withContext(Dispatchers.IO) {
                     wrapEspressoIdlingResource {
-                        val rules  = listOf<String>("cats has:images","dogs has:images")
+                        val rules  = listOf<String>("android kotlin", "cats has:images","dogs has:images")
                         addNewRules(rules)
                         val response = getRemoteTweetStream()
                         if (response.isAnError()) {

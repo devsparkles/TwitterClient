@@ -1,6 +1,6 @@
 package com.devsparkle.twitterclient.data.remote
 
-import android.content.Context
+import com.devsparkle.twitterclient.utils.Constants
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -12,8 +12,8 @@ import java.util.concurrent.TimeUnit
 interface RemoteRetrofitBuilder {
     companion object {
 
-        fun createRetrofit(context: Context, serverUrl: String): Retrofit {
-            val okHttpClient = createOkHttpClient()
+        fun createRetrofit(serverUrl: String): Retrofit {
+            val okHttpClient = createDefaultOkHttpClient()
             return Retrofit.Builder()
                 .baseUrl(serverUrl)
                 .client(okHttpClient)
@@ -23,20 +23,25 @@ interface RemoteRetrofitBuilder {
                 .build()
         }
 
-        private fun createOkHttpClient(): OkHttpClient {
-
+        fun createDefaultOkHttpClient(): OkHttpClient {
+            val globalTimeout = 30L
             val httpLoggingInterceptor = HttpLoggingInterceptor()
             httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
 
             return OkHttpClient.Builder()
-                .writeTimeout(0, TimeUnit.SECONDS)
-                .connectTimeout(0, TimeUnit.SECONDS)
-                .readTimeout(0, TimeUnit.SECONDS)
+                .writeTimeout(globalTimeout, TimeUnit.SECONDS)
+                .connectTimeout(globalTimeout, TimeUnit.SECONDS)
+                .readTimeout(globalTimeout, TimeUnit.SECONDS)
                 .addInterceptor(httpLoggingInterceptor)
-                .addInterceptor(OAuthInterceptor("Bearer", "AAAAAAAAAAAAAAAAAAAAALcSdgEAAAAAW8S0SWmcUaiQoM4%2F0Q%2FWWJ7Hoyk%3DydCCizNCgGsExYExd8XL9QUNzOCB3G920AVYayotiinWYzyOP6"))
+                .addInterceptor(OAuthInterceptor("Bearer", Constants.TWITTER_API_KEY))
                 .build()
         }
 
+        fun createNoTimeoutOkHttpClient(): OkHttpClient {
+            return OkHttpClient().newBuilder()
+                .addInterceptor(OAuthInterceptor("Bearer", Constants.TWITTER_API_KEY))
+                .build()
+        }
 
     }
 }

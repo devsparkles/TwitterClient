@@ -21,7 +21,7 @@ import org.koin.test.mock.declareMock
 import org.mockito.Mockito
 
 @ExperimentalCoroutinesApi
-class RemoteCaseStudyRepositoryTest : KoinTest {
+class RemoteTweetRepositoryTest : KoinTest {
 
 
     // I need to do that so I can do declareMock later in the test

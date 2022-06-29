@@ -3,13 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="app/src/main/res/layout/activity_list_tweet.xml" value="0.5754310344827587" />
+        <entry key="app/src/main/res/layout/activity_list_tweet.xml" value="0.4170692431561997" />
         <entry key="app/src/main/res/layout/view_holder_tweet_item.xml" value="0.47101449275362317" />
         <entry key="app/src/main/res/xml/network_security_config.xml" value="0.4463019250253293" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

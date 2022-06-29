@@ -1,6 +1,7 @@
 package com.devsparkle.twitterclient.data.remote
 
 import com.devsparkle.twitterclient.utils.Constants
+import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -8,6 +9,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.util.concurrent.TimeUnit
+
 
 interface RemoteRetrofitBuilder {
     companion object {
@@ -23,7 +25,7 @@ interface RemoteRetrofitBuilder {
                 .build()
         }
 
-        fun createDefaultOkHttpClient(): OkHttpClient {
+       private fun createDefaultOkHttpClient(): OkHttpClient {
             val globalTimeout = 30L
             val httpLoggingInterceptor = HttpLoggingInterceptor()
             httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
@@ -37,7 +39,22 @@ interface RemoteRetrofitBuilder {
                 .build()
         }
 
-        fun createNoTimeoutOkHttpClient(): OkHttpClient {
+
+        fun createLenientRetrofit(serverUrl: String): Retrofit {
+            val okHttpClient = createNoTimeoutOkHttpClient()
+            val gson = GsonBuilder()
+                .setLenient()
+                .create()
+            return Retrofit.Builder()
+                .baseUrl(serverUrl)
+                .client(okHttpClient)
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build()
+        }
+
+        private fun createNoTimeoutOkHttpClient(): OkHttpClient {
             return OkHttpClient().newBuilder()
                 .addInterceptor(OAuthInterceptor("Bearer", Constants.TWITTER_API_KEY))
                 .build()

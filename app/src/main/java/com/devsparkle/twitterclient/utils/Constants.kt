@@ -1,17 +1,17 @@
 package com.devsparkle.twitterclient.utils
 
 object Constants {
-   val TWITTER_API_KEY = "AAAAAAAAAAAAAAAAAAAAALcSdgEAAAAAW8S0SWmcUaiQoM4%2F0Q%2FWWJ7Hoyk%3DydCCizNCgGsExYExd8XL9QUNzOCB3G920AVYayotiinWYzyOP6"
-   val TWITTER_STREAM_URL = "https://api.twitter.com/2/tweets/search/stream"
+    const val TWITTER_API_KEY =
+        "AAAAAAAAAAAAAAAAAAAAALcSdgEAAAAAW8S0SWmcUaiQoM4%2F0Q%2FWWJ7Hoyk%3DydCCizNCgGsExYExd8XL9QUNzOCB3G920AVYayotiinWYzyOP6"
 
 
-
-
-   val EXCEPTION_NO_RULES_ADDED = "No rules where added, the tweet stream needs rules to be added to run"
-   val EXCEPTION_COULD_NOT_DELETE_RULES = "No rules not deleted and error occured"
-   val EXCEPTION_COULD_NOT_ADD_RULES = "Could not add rules to the twitter backend"
-
-
+    /***
+     * Exceptions messages
+     */
+    const val EXCEPTION_RULES_NOT_ADDED = "error: you need to add rules to the use case"
+    const val EXCEPTION_RULES_NOT_DELETED = "error: rules not deleted remotely"
+    const val EXCEPTION_RULES_NOT_ADDED_TO_BACKEND = "error: rules not added remotely"
+    const val EXCEPTION_INTERVAL_ZERO_OR_NEGATIVE = "error: interval could not be zero or negative"
 
 
 }

@@ -1,7 +1,6 @@
 package com.devsparkle.twitterclient.domain.use_case
 
 
-import android.util.Log
 import com.devsparkle.twitterclient.base.resource.Resource
 import com.devsparkle.twitterclient.domain.repository.local.LocalTweetRepository
 import com.devsparkle.twitterclient.domain.repository.remote.RemoteRuleRepository
@@ -38,7 +37,7 @@ class SearchOpenAndSaveTweetStream(
     suspend operator fun invoke(listRules: List<String>): Resource<String> {
         try {
             if (listRules.isEmpty()) {
-                return Resource.Error(Exception(Constants.EXCEPTION_NO_RULES_ADDED))
+                return Resource.Error(Exception(Constants.EXCEPTION_RULES_NOT_ADDED))
             }
 
             // get all current rules
@@ -46,9 +45,9 @@ class SearchOpenAndSaveTweetStream(
             // delete previous rules
             val rulesIds = rules.map { it.id }
             if (rulesIds.isNotEmpty()) {
-              val result =  remoteRuleRepository.deleteRuleById(rulesIds)
-                if(!result){
-                    return Resource.Error(Exception(Constants.EXCEPTION_COULD_NOT_DELETE_RULES))
+                val result = remoteRuleRepository.deleteRuleById(rulesIds)
+                if (!result) {
+                    return Resource.Error(Exception(Constants.EXCEPTION_RULES_NOT_DELETED))
                 }
             }
 
@@ -59,16 +58,19 @@ class SearchOpenAndSaveTweetStream(
             }
             val result = remoteRuleRepository.addRule(rulesToAdd)
             if (!result) {
-                return Resource.Error(Exception(Constants.EXCEPTION_COULD_NOT_ADD_RULES))
+                return Resource.Error(Exception(Constants.EXCEPTION_RULES_NOT_ADDED_TO_BACKEND))
             }
 
 
             val interval = localTweetRepository.getTweetLifeSpan()
+            if (interval == 0 || interval < 0) {
+                return Resource.Error(Exception(Constants.EXCEPTION_INTERVAL_ZERO_OR_NEGATIVE))
+            }
             localTweetRepository.deleteAllTweets()
             var lastDateInserted = Date()
             remoteTweetRepository.getTweets()
                 // the app will buffer 20 result inside the flow and when the buffer is too big just drop the oldest
-                .buffer(20,BufferOverflow.DROP_OLDEST)
+                .buffer(20, BufferOverflow.DROP_OLDEST)
                 // the app will retry to connect to the stream 2 times waiting 1 second
                 .retry(2) { e ->
                     LogApp.d(e.message)

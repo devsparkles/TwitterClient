@@ -32,7 +32,7 @@ class ListTweetActivity : BaseActivity() {
     private var delay = 5000
 
     // Rules used to define what will Twitter fetch
-    val rules = listOf<String>("android kotlin", "cats has:images", "dogs has:images")
+    val rules = listOf<String>("cats has:images", "dogs has:images")
 
     //endregion
 

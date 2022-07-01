@@ -10,12 +10,12 @@ import retrofit2.http.POST
 interface RuleService {
 
     @GET("/2/tweets/search/stream/rules")
-     fun listRules(): RuleWrapperDto?
+    suspend fun listRules(): RuleWrapperDto?
 
     @POST("/2/tweets/search/stream/rules")
-     fun addRule(@Body rules: RulesDto)
+    suspend fun addRule(@Body rules: RulesDto)
 
     @POST("/2/tweets/search/stream/rules")
-     fun deleteRule(@Body deleteRules: RuleToDeleteDto): RuleWrapperDto?
+    suspend fun deleteRule(@Body deleteRules: RuleToDeleteDto): RuleWrapperDto?
 
 }

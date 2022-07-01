@@ -1,6 +1,6 @@
-package com.devsparkle.twitterclient.data.remote
+package com.devsparkle.twitterclient
 
-import com.devsparkle.twitterclient.utils.Constants
+import com.devsparkle.twitterclient.data.remote.OAuthInterceptor
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -9,8 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.util.concurrent.TimeUnit
 
-
-interface RemoteRetrofitBuilder {
+interface MockRemoteRetrofitBuilder {
     companion object {
 
         fun createRetrofit(serverUrl: String): Retrofit {
@@ -33,7 +32,7 @@ interface RemoteRetrofitBuilder {
                 .connectTimeout(globalTimeout, TimeUnit.SECONDS)
                 .readTimeout(globalTimeout, TimeUnit.SECONDS)
                 .addInterceptor(httpLoggingInterceptor)
-                .addInterceptor(OAuthInterceptor("Bearer", Constants.TWITTER_API_KEY))
+                .addInterceptor(OAuthInterceptor("Bearer", "randomKey"))
                 .build()
         }
 
@@ -53,7 +52,7 @@ interface RemoteRetrofitBuilder {
 
         private fun createNoTimeoutOkHttpClient(): OkHttpClient {
             return OkHttpClient().newBuilder()
-                .addInterceptor(OAuthInterceptor("Bearer", Constants.TWITTER_API_KEY))
+                .addInterceptor(OAuthInterceptor("Bearer", "randomKey"))
                 .build()
         }
 

@@ -1,4 +1,4 @@
-package com.devsparkle.twitterclient
+package com.devsparkle.twitterclient.utils
 
 import com.devsparkle.twitterclient.data.local.tweet.entities.TweetEntity
 import com.devsparkle.twitterclient.domain.model.Tweet

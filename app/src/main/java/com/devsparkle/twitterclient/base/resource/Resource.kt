@@ -1,5 +1,7 @@
 package com.devsparkle.twitterclient.base.resource
 
+import com.devsparkle.twitterclient.utils.LogApp
+
 
 sealed class Resource<T> {
     abstract fun value(): T?
@@ -34,6 +36,7 @@ sealed class Resource<T> {
             val value = suspendFunction()
             Success(value)
         } catch (exception: Exception) {
+            LogApp.e(exception.message)
             Error(exception)
         }
     }

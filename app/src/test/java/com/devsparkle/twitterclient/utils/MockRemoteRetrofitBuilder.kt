@@ -1,4 +1,4 @@
-package com.devsparkle.twitterclient
+package com.devsparkle.twitterclient.utils
 
 import com.devsparkle.twitterclient.data.remote.OAuthInterceptor
 import com.google.gson.GsonBuilder

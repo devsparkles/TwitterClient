@@ -14,7 +14,7 @@ interface MockTweetService :TweetService{
     @Mock
     @GET("/2/tweets/search/stream")
     @Streaming
-    @MockResponse(body = "mock1.json")
-    override suspend fun getTweets(): Call<ResponseBody>
+    @MockResponse(body = "{\"data\":{\"id\":\"1542814699959508994\",\"text\":\"tweet1\"},\"matching_rules\":[{\"id\":\"1542814594246262784\",\"tag\":\"cats with images\"}]}")
+    override fun getTweets(): Call<ResponseBody>
 
 }

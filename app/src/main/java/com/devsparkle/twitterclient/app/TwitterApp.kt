@@ -1,10 +1,12 @@
 package com.devsparkle.twitterclient.app
 
 import android.app.Application
+import com.devsparkle.twitterclient.BuildConfig
 import com.devsparkle.twitterclient.data.di.localDataModule
 import com.devsparkle.twitterclient.data.di.remoteDataModule
 import com.devsparkle.twitterclient.domain.di.domainModule
 import com.devsparkle.twitterclient.presentation.tweets.di.tweetModule
+import com.devsparkle.twitterclient.utils.TimberConfiguration
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import org.koin.core.error.KoinAppAlreadyStartedException
@@ -15,6 +17,11 @@ class  TwitterApp : Application() {
     override fun onCreate() {
         super.onCreate()
         setupKoin()
+        setupTimber()
+    }
+
+    private fun setupTimber(){
+        TimberConfiguration.configure()
     }
 
     private fun setupKoin() {

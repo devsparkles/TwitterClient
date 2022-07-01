@@ -7,6 +7,7 @@ import com.devsparkle.twitterclient.base.BaseViewModel
 import com.devsparkle.twitterclient.base.resource.Resource
 import com.devsparkle.twitterclient.domain.model.Tweet
 import com.devsparkle.twitterclient.domain.use_case.*
+import com.devsparkle.twitterclient.utils.LogApp
 import com.devsparkle.twitterclient.utils.wrapEspressoIdlingResource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -60,5 +61,4 @@ class ListTweetViewModel(
             }
         }
     }
-
 }

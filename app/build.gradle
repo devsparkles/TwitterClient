@@ -37,6 +37,7 @@ android {
         viewBinding true
     }
     testOptions {
+        unitTests.returnDefaultValues = true
         unitTests {
             includeAndroidResources = true
         }
@@ -168,4 +169,6 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-scalars:2.6.2'
     implementation 'co.infinum:retromock:1.1.1'
     testImplementation 'app.cash.turbine:turbine:0.8.0'
+    testImplementation 'org.robolectric:robolectric:4.8.1'
+
 }

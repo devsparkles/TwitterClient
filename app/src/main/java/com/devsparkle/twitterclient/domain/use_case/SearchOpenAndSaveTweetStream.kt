@@ -1,11 +1,13 @@
 package com.devsparkle.twitterclient.domain.use_case
 
 
+import android.util.Log
 import com.devsparkle.twitterclient.base.resource.Resource
 import com.devsparkle.twitterclient.domain.repository.local.LocalTweetRepository
 import com.devsparkle.twitterclient.domain.repository.remote.RemoteRuleRepository
 import com.devsparkle.twitterclient.domain.repository.remote.RemoteTweetRepository
 import com.devsparkle.twitterclient.utils.Constants
+import com.devsparkle.twitterclient.utils.LogApp
 import com.devsparkle.twitterclient.utils.extensions.addSeconds
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.delay
@@ -44,7 +46,10 @@ class SearchOpenAndSaveTweetStream(
             // delete previous rules
             val rulesIds = rules.map { it.id }
             if (rulesIds.isNotEmpty()) {
-                remoteRuleRepository.deleteRuleById(rulesIds)
+              val result =  remoteRuleRepository.deleteRuleById(rulesIds)
+                if(!result){
+                    return Resource.Error(Exception(Constants.EXCEPTION_COULD_NOT_DELETE_RULES))
+                }
             }
 
             // add wanted rules
@@ -66,11 +71,12 @@ class SearchOpenAndSaveTweetStream(
                 .buffer(20,BufferOverflow.DROP_OLDEST)
                 // the app will retry to connect to the stream 2 times waiting 1 second
                 .retry(2) { e ->
+                    LogApp.d(e.message)
                     (e is Exception).also { if (it) delay(1000) }
                 }
                 .collect {
                     it?.let { t ->
-                        println("[id] ${it.id}  [tweet] ${it.text}")
+                        //("[id] ${it.id}  [tweet] ${it.text}")
                         lastDateInserted = lastDateInserted.addSeconds(interval)
                         t.lifespan = lastDateInserted
                         localTweetRepository.persistTweet(t)

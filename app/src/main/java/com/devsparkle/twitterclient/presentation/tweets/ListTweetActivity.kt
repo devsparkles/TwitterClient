@@ -13,6 +13,7 @@ import com.devsparkle.twitterclient.databinding.ActivityListTweetBinding
 import com.devsparkle.twitterclient.domain.model.Tweet
 import com.devsparkle.twitterclient.presentation.tweets.adapter.TweetAdapter
 import com.devsparkle.twitterclient.presentation.tweets.viewmodel.ListTweetViewModel
+import com.devsparkle.twitterclient.utils.LogApp
 import com.devsparkle.twitterclient.utils.extensions.hide
 import com.devsparkle.twitterclient.utils.extensions.isConnected
 import com.devsparkle.twitterclient.utils.extensions.show
@@ -184,6 +185,7 @@ class ListTweetActivity : BaseActivity() {
     }
 
     private fun onTweetError(exception: Exception) = with(binding) {
+        LogApp.d(exception.message)
         loadingScreen.hide()
         toolbar.title = getString(R.string.toolbar_title_error)
         emptyDataParent.show()

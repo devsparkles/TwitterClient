@@ -143,9 +143,11 @@ class ListTweetActivity : BaseActivity() {
         viewModel.remoteTweetState.observeResource(
             this@ListTweetActivity,
             loading = ::onTweetLoading,
-            success = ::onTweetySuccess,
+            success = {},
             error = ::onTweetError,
-            successWithoutContent = {}
+            successWithoutContent = {
+                onTweetSuccess()
+            }
         )
         // Everytime a tweet is added to the local database this callback will be fired
         viewModel.observableTweets().observe(this) { displayNewTweets(tweets = it) }
@@ -164,7 +166,6 @@ class ListTweetActivity : BaseActivity() {
         } ?: run {
             showMessage("no tweet to show")
         }
-
     }
 
     //region tweet_state
@@ -178,7 +179,7 @@ class ListTweetActivity : BaseActivity() {
         toolbar.title = getString(R.string.toolbar_title_offline)
     }
 
-    private fun onTweetySuccess(value: List<Tweet>?) {
+    private fun onTweetSuccess() {
         showMessage("Tweet Stream connection success")
     }
 

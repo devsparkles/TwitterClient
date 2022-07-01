@@ -14,7 +14,6 @@ val tweetModule = module {
             get<DeleteLocalOldTweet>(),
             get<ConfigureTweetLifeSpan>(),
             get<SearchOpenAndSaveTweetStream>(),
-            get<AddNewRules>(),
             get<GetLocalTweets>()
         )
     }

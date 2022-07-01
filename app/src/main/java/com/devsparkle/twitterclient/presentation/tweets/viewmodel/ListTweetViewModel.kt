@@ -54,12 +54,7 @@ class ListTweetViewModel(
                 withContext(Dispatchers.IO) {
                     wrapEspressoIdlingResource {
                         val response = searchOpenAndSaveTweetStream(rules)
-                        if (response.isAnError()) {
-                            _remoteTweetState.postValue(Resource.Error())
-                        }
-                        if(response.isNotAnError()){
-                            _remoteTweetState.postValue(response)
-                        }
+                        _remoteTweetState.postValue(response)
                     }
                 }
             }

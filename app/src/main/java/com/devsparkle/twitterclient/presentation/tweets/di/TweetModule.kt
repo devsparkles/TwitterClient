@@ -13,7 +13,7 @@ val tweetModule = module {
         ListTweetViewModel(
             get<DeleteLocalOldTweet>(),
             get<ConfigureTweetLifeSpan>(),
-            get<GetRemoteTweetStream>(),
+            get<SearchOpenAndSaveTweetStream>(),
             get<AddNewRules>(),
             get<GetLocalTweets>()
         )

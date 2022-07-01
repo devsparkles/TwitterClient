@@ -1,0 +1,18 @@
+{
+  "data": [
+    {
+      "id": "1537730753714429952",
+      "text": "tweet1"
+    },
+    {
+      "id": "1537730702485200896",
+      "text": "tweet2"
+    }
+  ],
+  "meta": {
+    "newest_id": "1537730753714429952",
+    "oldest_id": "1537730298909171713",
+    "result_count": 2,
+    "next_token": "b26v89c19zqg8o3fpyznisjr3k0ea1a30ow2jdzhy23ct"
+  }
+}

@@ -15,13 +15,12 @@ import kotlinx.coroutines.withContext
 class ListTweetViewModel(
     private val deleteLocalOldTweet: DeleteLocalOldTweet,
     private val configureTweetLifeSpan: ConfigureTweetLifeSpan,
-    private val getRemoteTweetStream: GetRemoteTweetStream,
-    private val addNewRules: AddNewRules,
+    private val searchOpenAndSaveTweetStream: SearchOpenAndSaveTweetStream,
     private val getLocalTweets: GetLocalTweets,
 ) : BaseViewModel() {
 
-    private val _remoteTweetState = MutableLiveData<Resource<List<Tweet>?>>()
-    val remoteTweetState: LiveData<Resource<List<Tweet>?>> = _remoteTweetState
+    private val _remoteTweetState = MutableLiveData<Resource<String>>()
+    val remoteTweetState: LiveData<Resource<String>> = _remoteTweetState
 
 
     fun deleteOutDatedTweet() {
@@ -44,22 +43,22 @@ class ListTweetViewModel(
         return getLocalTweets()
     }
 
+
     /***
-     * Search tweets by query,
-     * Delete all previous tweets in the local database, #
-     * Save new Tweets with an interval
+     * Open the tweet stream and save them inside the localdabase
      */
-    fun getTweetStream(query: String) {
+    fun getTweetStream(rules: List<String>) {
         viewModelScope.launch {
             if (isNetworkAvailable.value == true) {
                 _remoteTweetState.postValue(Resource.Loading())
                 withContext(Dispatchers.IO) {
                     wrapEspressoIdlingResource {
-                        val rules  = listOf<String>("android kotlin", "cats has:images","dogs has:images")
-                        addNewRules(rules)
-                        val response = getRemoteTweetStream()
+                        val response = searchOpenAndSaveTweetStream(rules)
                         if (response.isAnError()) {
                             _remoteTweetState.postValue(Resource.Error())
+                        }
+                        if(response.isNotAnError()){
+                            _remoteTweetState.postValue(response)
                         }
                     }
                 }

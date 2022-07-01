@@ -6,11 +6,7 @@ import org.koin.dsl.module
 val domainModule = module {
 
     factory {
-        GetRemoteTweetStream(get(), get())
-    }
-
-    factory {
-        AddNewRules(get())
+        SearchOpenAndSaveTweetStream(get(), get(), get())
     }
 
     factory {

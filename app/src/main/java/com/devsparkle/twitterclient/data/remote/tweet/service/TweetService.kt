@@ -9,7 +9,7 @@ interface TweetService {
 
     @GET("/2/tweets/search/stream")
     @Streaming
-    suspend fun getTweets(): Call<ResponseBody>
+    fun getTweets(): Call<ResponseBody>
 
 
 }

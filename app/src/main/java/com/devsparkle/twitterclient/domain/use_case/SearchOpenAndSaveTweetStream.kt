@@ -63,7 +63,7 @@ class SearchOpenAndSaveTweetStream(
             var lastDateInserted = Date()
             remoteTweetRepository.getTweets()
                 // the app will buffer 20 result inside the flow and when the buffer is too big just drop the oldest
-                .buffer(20)
+                .buffer(20,BufferOverflow.DROP_OLDEST)
                 // the app will retry to connect to the stream 2 times waiting 1 second
                 .retry(2) { e ->
                     (e is Exception).also { if (it) delay(1000) }

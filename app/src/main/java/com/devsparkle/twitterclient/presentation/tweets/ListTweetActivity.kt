@@ -4,26 +4,32 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.devsparkle.twitterclient.R
-import com.devsparkle.twitterclient.base.BaseActivity
 import com.devsparkle.twitterclient.base.resource.observeResource
 import com.devsparkle.twitterclient.databinding.ActivityListTweetBinding
 import com.devsparkle.twitterclient.domain.model.Tweet
 import com.devsparkle.twitterclient.presentation.tweets.adapter.TweetAdapter
 import com.devsparkle.twitterclient.presentation.tweets.viewmodel.ListTweetViewModel
+import com.devsparkle.twitterclient.utils.ConnectionLiveData
 import com.devsparkle.twitterclient.utils.LogApp
 import com.devsparkle.twitterclient.utils.extensions.hide
 import com.devsparkle.twitterclient.utils.extensions.isConnected
 import com.devsparkle.twitterclient.utils.extensions.show
+import com.devsparkle.twitterclient.utils.extensions.showMessage
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class ListTweetActivity : BaseActivity() {
+class ListTweetActivity : AppCompatActivity() {
 
     private val TAG: String = "ListTweetActivity"
+
+
+
+    lateinit var connectionLiveData: ConnectionLiveData
 
     //region configuration
     // You can easily configure the tweet lifespan here. 10 is in seconds
@@ -105,6 +111,7 @@ class ListTweetActivity : BaseActivity() {
      * If the app is not connected it will stop that call and save the current already downloaded tweet.
      */
     private fun setupIsConnected() {
+        connectionLiveData = ConnectionLiveData(this)
         connectionLiveData.observe(this) {
             viewModel.isNetworkAvailable.value = it
             if (it) {
